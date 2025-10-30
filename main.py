@@ -36,13 +36,15 @@ def main():
     imgs: list[Image] = load_images(files)  # pyright: ignore[reportAssignmentType]
     iter = zip(files, imgs)
 
-    print("\n******")
     for file, img in iter:
         rgb = img.convert("RGB")
         outputs = image_classifier(rgb, candidate_labels)
-        print(file, outputs)
-        print("\n")
-    print("\n******")
+        print("\n******")
+        print(file)
+        print("******")
+        for kv in outputs:
+            print(f"{kv['label']} = {kv['score']}")
+        print("******\n")
 
 
 if __name__ == "__main__":
