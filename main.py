@@ -19,22 +19,30 @@ def get_classifier():
 def main():
     image_classifier = get_classifier()
     candidate_labels = [
-        "happy",
-        "sad",
-        "laugh",
-        "cry",
-        "action",
-        "fantasy",
-        "comedy",
-        "romance",
-        "boys",
-        "girls",
+        "for a happy day",
+        "for a sad day",
+        "for laughing",
+        "for crying",
+        "battle action",
+        "fantasy world",
+        "gag comedy",
+        "love romance",
+        "history",
+        "war",
+        "for boys",
+        "for girls",
     ]
-    imgs: list[Image] = load_images(get_files())  # pyright: ignore[reportAssignmentType]
+    files = get_files()
+    imgs: list[Image] = load_images(files)  # pyright: ignore[reportAssignmentType]
+    iter = zip(files, imgs)
 
-    for img in imgs:
-        outputs = image_classifier(img, candidate_labels)
-        print(outputs)
+    print("\n******")
+    for file, img in iter:
+        rgb = img.convert("RGB")
+        outputs = image_classifier(rgb, candidate_labels)
+        print(file, outputs)
+        print("\n")
+    print("\n******")
 
 
 if __name__ == "__main__":
