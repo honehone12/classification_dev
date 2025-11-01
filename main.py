@@ -1,5 +1,6 @@
 from pathlib import Path
 from PIL.Image import Image
+import torch
 from transformers import pipeline
 from transformers.image_utils import load_images
 
@@ -47,14 +48,16 @@ def main():
     iter = zip(files, imgs)
 
     for file, img in iter:
-        rgb = img.convert("RGB")
-        outputs = image_classifier(rgb, candidate_labels)
-        print("\n******")
-        print(file)
-        print("******")
-        for kv in outputs:
-            print(f"{kv['label']} = {kv['score']}")
-        print("******\n")
+        with img:
+            rgb = img.convert("RGB")
+            with torch.no_grad():
+                outputs = image_classifier(rgb, candidate_labels)
+                print("\n******")
+                print(file)
+                print("******")
+                for kv in outputs:
+                    print(f"{kv['label']} = {kv['score']}")
+                print("******\n")
 
 
 if __name__ == "__main__":
